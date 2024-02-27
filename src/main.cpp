@@ -3,16 +3,16 @@
 using namespace geode::prelude;
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-bool sfx = true;
-void updsettings() {
-	sfx = Mod::get()->getSettingValue<bool>("SFX");
-};
+void PlaySoundEffect(auto effect){
+	if (Mod::get()->getSettingValue<bool>("SFX")) {
+		FMODAudioEngine::sharedEngine()->playEffect(effect);
+	};
+}
 class $modify(Uwu, MenuLayer) {
 	bool init() {
 		if (!MenuLayer::init()) {
 			return false;
 		}
-		updsettings();
 	auto geodeButton = dynamic_cast<CCMenuItemSpriteExtra*>(
 		getChildByIDRecursive("geode.loader/geode-button")
 	);
@@ -35,9 +35,7 @@ class $modify(Uwu, MenuLayer) {
 		return true;
 	}
 	void onGeode(CCObject*) {
-		if (sfx) {
-			FMODAudioEngine::sharedEngine()->playEffect("UwU_1.mp3"_spr);
-		}
+		PlaySoundEffect("UwU_1.mp3"_spr);
 		geode::openModsList();
 	}
 };
